@@ -30,13 +30,23 @@ def principalpage(request):
         'usuario_atual': usuario_atual
     }
 
-    return render(request, 'principal2.html', contexto)
+    return render(request, 'principal.html', contexto)
 
 @login_required
 def list_chaves(request):
     chaves = Chave.objects.all()
     context = {'chaves': chaves}
     return render(request, 'list_chaves.html', context)
+
+@login_required
+def list_disponiveis(request):
+    chaves_disponiveis = Chave.objects.filter(disponivel=True)
+    return render(request, 'list_disponiveis.html', {'chaves': chaves_disponiveis})
+
+@login_required
+def list_indisponiveis(request):
+    chaves_indisponoveis = Chave.objects.filter(disponivel=False)
+    return render(request, 'list_indisponiveis.html', {'chaves': chaves_indisponoveis})
 
 @login_required
 def devolver(request):
@@ -89,18 +99,29 @@ def devolver_chave(request, chave_id):
 
 
 
-def loginpage(request):
-    if request.method == 'GET':
-        return render(request, template_name='login.html')
-    if request.method =='POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username = username, password = password)
-        if user is not None:
-            login(request, user)
-            return redirect ('principal2')
-        else:
-            return redirect ('login')
+
+
+
+
+
+
+
+
+
+
+
+# def loginpage(request):
+#     if request.method == 'GET':
+#         return render(request, template_name='login.html')
+#     if request.method =='POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(username = username, password = password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect ('list_disponiveis')
+#         else:
+#             return redirect ('login')
     
 def logoutpage(request):
     logout(request)
@@ -111,7 +132,7 @@ class Registration(CreateView):
     model = User
     form_class = UserRegistrationForm
     template_name = "registration/registration.html"
-    success_url = reverse_lazy("principal2")
+    success_url = reverse_lazy("principal")
 
     def form_valid(self, form):
         response = super().form_valid(form)

@@ -5,10 +5,15 @@
   -moz-user-select: none;
   user-select: none;
 }
+
 .hidden {
   display: none;
 }
 
+.btn-sair{
+  padding-left: 20px;
+  margin-left: 40px;
+}
 
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
@@ -42,6 +47,7 @@
   height: 2.75rem;
   overflow-y: hidden;
 }
+
 .button {
   display: inline-block;
   padding: 10px 20px;
