@@ -1,0 +1,16 @@
+{% extends 'principal2.html' %}
+
+{% block content %}
+  {% for chave in chaves %}
+    <p>
+      {{ chave.sala.descricao }} - {% if chave.disponivel %}(Disponível){% else %}(Indisponível){% endif %}
+      {% if chave.disponivel %}
+        <a href="{% url 'alugar_chave' chave_id=chave.id %}" class="button">Pegar chave</a>
+      {% else %}
+        {% if chave.alugueis.last %}
+          Chave pegada por: {{ chave.alugueis.last.funcionario.nome }}
+        {% endif %}
+      {% endif %}
+    </p>
+  {% endfor %}
+{% endblock content %}

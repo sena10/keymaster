@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chave Pegada</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    #countdown {
+      font-size: 24px;
+      text-align: center;
+      margin-top: 50px;
+    }
+  </style>
+  <script> function countdown(seconds) {
+    var countdownElement = document.getElementById('countdown');
+
+    var interval = setInterval(function() {
+      countdownElement.innerHTML = seconds;
+
+      seconds--;
+
+      if (seconds < 0) {
+        clearInterval(interval);
+        // Redirecionar para outra página após a contagem regressiva
+        window.location.href ="{% url 'logout' %}";
+      }
+    }, 1000);
+  }
+
+  // Chamar a função countdown ao carregar a página
+  window.onload = function() {
+    countdown(1); // Iniciar a contagem regressiva com 5 segundos
+  };
+</script>
+</head>
+<body>
+  <h1>Chave Pegada com Sucesso!</h1>
+  <p>A chave foi pegada com sucesso. Obrigado!</p>
+  <div id="countdown"></div>
+</body>
+</html>
