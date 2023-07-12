@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<video id="preview"></video>
+<script>
+    let scanner = new Instascan.Scanner(
+        {
+            video: document.getElementById('preview')
+        }
+    );
+
+
+    scanner.addListener('scan', function(content) {
+        
+        window.open("http://127.0.0.1:8000/chaves/devolver/" + content + "/", "_self");
+    });
+    Instascan.Camera.getCameras().then(cameras => 
+    {
+        if(cameras.length > 0){
+            scanner.start(cameras[0]);
+        } else {
+            console.error("Não existe câmera no dispositivo!");
+        }
+    });
+</script>
+
+
+  
+    <table>
+        <tr>
+          <th>Número</th>
+          <th>Descrição</th>
+          <th>Ação</th>
+        </tr>
+        {% for chave in chaves %}
+          {% if not chave.disponivel %}
+            <tr>
+              <td>{{ chave.sala.numero }}</td>
+              <td>{{ chave.sala.descricao }}</td>
+              <td><a href="{% url 'devolver_chave' chave.id %}">Devolver chave</a></td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+        
+
+      </table>
+      {% endblock content %}

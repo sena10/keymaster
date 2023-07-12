@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<video id="preview"></video>
+
+<script>
+    let scanner = new Instascan.Scanner(
+        {
+            video: document.getElementById('preview')
+        }
+    );
+    scanner.addListener('scan', function(content) {
+       
+        window.open("http://127.0.0.1:8000/chaves/pegar/" + content + "/", "_self");
+    });
+    Instascan.Camera.getCameras().then(cameras => 
+    {
+        if(cameras.length > 0){
+            scanner.start(cameras[0]);
+        } else {
+            console.error("Não existe câmera no dispositivo!");
+        }
+    });
+</script>
+
+<table>
+    <tr>
+      <th>Número da Sala</th>
+      <th>Descrição da Sala</th>
+      <th>Ação</th>
+    </tr>
+  
+    {% for chave in chaves %}
+      <tr>
+        <td>
+          {% if chave.disponivel %}
+            {{ chave.sala.numero }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>
+          {% if chave.disponivel %}
+            {{ chave.sala.descricao }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>
+          {% if chave.disponivel %}
+            <a href="{% url 'alugar_chave' chave.id %}">Pegar chave</a>
+          {% else %}
+            <a href="{% url 'devolver_chave' chave.id %}">Devolver chave</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% endblock content %}
+          
